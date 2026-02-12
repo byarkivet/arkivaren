@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Arkiv</title>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: "Times New Roman", serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 700px;
+    }
+
+    h1 {
+        font-weight: normal;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .spacer-small {
+        height: 20px;
+    }
+
+    .spacer-medium {
+        height: 40px;
+    }
+
+    .spacer-large {
+        height: 60px;
+    }
+
+    p {
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .small-text {
+        font-size: 14px;
+    }
+
+    input {
+        background: black;
+        color: white;
+        border: 1px solid white;
+        padding: 8px;
+        font-size: 16px;
+        margin-top: 40px;
+        text-align: center;
+        outline: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="innhold"></div>
+
+<script>
+const riktigPassord = "personlig";
+
+function visSide() {
+    if (localStorage.getItem("tilgang") === "ja") {
+        document.getElementById("innhold").innerHTML = `
+            <div class="container">
+                <h1>AKRIVNOTAT</h1>
+
+                <div class="spacer-small"></div>
+
+                <p class="small-text">
+                avviket gjelder ikke innhold, men plassering
+                </p>
+
+                <div class="spacer-medium"></div>
+
+                <p>
+                Dokumenter av personlig karakter kan ikke behandles uten avstand.
+                </p>
+
+                <div class="spacer-medium"></div>
+
+                <p>
+                Videre materiale er frigitt.
+                </p>
+
+                <div class="spacer-medium"></div>
+
+                <p>- Arkivar X</p>
+            </div>
+        `;
+    } else {
+        document.getElementById("innhold").innerHTML = `
+            <div class="container">
+                <h1>ARKIVREGISTER</h1>
+                <div class="spacer-small"></div>
+                <h1>OSLO BYARKIV</h1>
+
+                <div class="spacer-large"></div>
+
+                <p>Sak 30/OSL</p>
+
+                <div class="spacer-medium"></div>
+
+                <p>Tilgang til dette materialet er begrenset.</p>
+
+                <div class="spacer-medium"></div>
+
+                <p>
+                Dokumentet ble vurdert etter korrekt prosedyre, men aldri korrekt plassert.
+                </p>
+
+                <div class="spacer-medium"></div>
+
+                <p>
+                Korrekt klassifisering kreves for videre innsyn.
+                </p>
+
+                <input type="password" id="passord" autofocus>
+            </div>
+        `;
+
+        const input = document.getElementById("passord");
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                if (this.value === riktigPassord) {
+                    localStorage.setItem("tilgang", "ja");
+                    location.reload();
+                } else {
+                    this.value = "";
+                }
+            }
+        });
+    }
+}
+
+visSide();
+</script>
+
+</body>
+</html>
