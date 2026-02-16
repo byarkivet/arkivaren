@@ -27,17 +27,9 @@
         margin: 0;
     }
 
-    .spacer-small {
-        height: 20px;
-    }
-
-    .spacer-medium {
-        height: 40px;
-    }
-
-    .spacer-large {
-        height: 60px;
-    }
+    .spacer-small { height: 20px; }
+    .spacer-medium { height: 40px; }
+    .spacer-large { height: 60px; }
 
     p {
         line-height: 1.6;
@@ -57,6 +49,30 @@
         margin-top: 40px;
         text-align: center;
         outline: none;
+        width: 220px;
+    }
+
+    button {
+        background: black;
+        color: white;
+        border: 1px solid white;
+        padding: 8px 18px;
+        font-size: 16px;
+        margin-top: 14px;
+        font-family: "Times New Roman", serif;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: white;
+        color: black;
+    }
+
+    .feil {
+        color: #bbbbbb;
+        font-size: 14px;
+        margin-top: 18px;
+        height: 18px;
     }
 </style>
 </head>
@@ -69,7 +85,9 @@
 const riktigPassord = "personlig";
 
 function visSide() {
+
     if (localStorage.getItem("tilgang") === "ja") {
+
         document.getElementById("innhold").innerHTML = `
             <div class="container">
                 <h1>ARKIVNOTAT</h1>
@@ -91,8 +109,9 @@ function visSide() {
                 <p>
                 Videre materiale er frigitt.
                 </p>
-                 <p>
-                Konvolutt med "dokument 8" kan nå åpnes. 
+
+                <p>
+                Konvolutt med "dokument 8" kan nå åpnes.
                 </p>
 
                 <div class="spacer-medium"></div>
@@ -100,7 +119,9 @@ function visSide() {
                 <p>- Arkivar X</p>
             </div>
         `;
+
     } else {
+
         document.getElementById("innhold").innerHTML = `
             <div class="container">
                 <h1>ARKIVREGISTER</h1>
@@ -127,21 +148,35 @@ function visSide() {
                 Korrekt klassifisering kreves for videre innsyn.
                 </p>
 
-                <input type="password" id="passord" autofocus>
+                <input type="password" id="passord" placeholder="passord" autofocus>
+                <br>
+                <button id="loginKnapp">Logg inn</button>
+                <p id="feilmelding" class="feil"></p>
             </div>
         `;
 
         const input = document.getElementById("passord");
+        const knapp = document.getElementById("loginKnapp");
+        const feilmelding = document.getElementById("feilmelding");
+
+        function sjekkPassord() {
+            if (input.value === riktigPassord) {
+                localStorage.setItem("tilgang", "ja");
+                location.reload();
+            } else {
+                input.value = "";
+                feilmelding.textContent = "Ingen treff i registeret.";
+                input.focus();
+            }
+        }
+
         input.addEventListener("keydown", function(e) {
             if (e.key === "Enter") {
-                if (this.value === riktigPassord) {
-                    localStorage.setItem("tilgang", "ja");
-                    location.reload();
-                } else {
-                    this.value = "";
-                }
+                sjekkPassord();
             }
         });
+
+        knapp.addEventListener("click", sjekkPassord);
     }
 }
 
